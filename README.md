@@ -25,22 +25,6 @@ docker pull fauria/vsftpd
 Environment variables
 ----
 
-This image uses environment variables to allow the configuration of some parameters at run time:
-
-* Variable name: `FTP_USER`
-* Default value: admin
-* Accepted values: Any string. Avoid whitespaces and special chars.
-* Description: Username for the default FTP account. If you don't specify it through the `FTP_USER` environment variable at run time, `admin` will be used by default.
-
-----
-
-* Variable name: `FTP_PASS`
-* Default value: Random string.
-* Accepted values: Any string.
-* Description: If you don't specify a password for the default FTP account through `FTP_PASS`, a 16 character random string will be automatically generated. You can obtain this value through the [container logs](https://docs.docker.com/engine/reference/commandline/container_logs/).
-
-----
-
 * Variable name: `PASV_ADDRESS`
 * Default value: Docker host IP / Hostname.
 * Accepted values: Any IPv4 address or Hostname (see PASV_ADDRESS_RESOLVE).
@@ -80,13 +64,6 @@ This image uses environment variables to allow the configuration of some paramet
 * Default value: NO
 * Accepted values: <NO|YES>
 * Description: Set to YES if you want the transfer log file to be written in standard xferlog format.
-
-----
-
-* Variable name: `LOG_STDOUT`
-* Default value: Empty string.
-* Accepted values: Any string to enable, empty string or not defined to disable.
-* Description: Output vsftpd log through STDOUT, so that it can be accessed through the [container logs](https://docs.docker.com/engine/reference/commandline/container_logs).
 
 ----
 
@@ -174,7 +151,6 @@ docker logs vsftpd
 ```bash
 docker run -d -v /my/data/directory:/home/vsftpd \
 -p 20:20 -p 21:21 -p 21100-21110:21100-21110 \
--e FTP_USER=myuser -e FTP_PASS=mypass \
 -e SSL_ENABLE=YES -e TLS_CERT=ftps_localhost.crt -e TLS_KEY=ftps_localhost.key \
 -e PASV_ADDRESS=127.0.0.1 -e PASV_MIN_PORT=21100 -e PASV_MAX_PORT=21110 \
 --name vsftpd --restart=always fauria/vsftpd
