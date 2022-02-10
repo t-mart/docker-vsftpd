@@ -3,8 +3,8 @@ FROM centos:7
 ARG USER_ID=14
 ARG GROUP_ID=50
 
-MAINTAINER Fer Uria <fauria@gmail.com>
-LABEL Description="vsftpd Docker image based on Centos 7. Supports passive mode, SSL and virtual users." \
+LABEL Author="Fer Uria <fauria@gmail.com>" \
+	Description="vsftpd Docker image based on Centos 7. Supports passive mode, SSL and virtual users." \
 	License="Apache License 2.0" \
 	Usage="docker run -d -p [HOST PORT NUMBER]:21 -v [HOST FTP HOME]:/home/vsftpd fauria/vsftpd" \
 	Version="1.0"
@@ -19,8 +19,6 @@ RUN yum install -y \
 RUN usermod -u ${USER_ID} ftp
 RUN groupmod -g ${GROUP_ID} ftp
 
-ENV FTP_USER **String**
-ENV FTP_PASS **Random**
 ENV PASV_ADDRESS **IPv4**
 ENV PASV_ADDR_RESOLVE NO
 ENV PASV_ENABLE YES
@@ -37,10 +35,10 @@ ENV SSL_ENABLE NO
 ENV TLS_CERT cert.pem
 ENV TLS_KEY key.pem
 
-
 COPY vsftpd.conf /etc/vsftpd/
 COPY vsftpd_virtual /etc/pam.d/
 COPY run-vsftpd.sh /usr/sbin/
+COPY virtual_users.txt /etc/vsftpd/
 
 RUN chmod +x /usr/sbin/run-vsftpd.sh
 RUN mkdir -p /home/vsftpd/
